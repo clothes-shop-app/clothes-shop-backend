@@ -1,6 +1,8 @@
 package config
 
 import (
+	"os"
+
 	"github.com/spf13/viper"
 )
 
@@ -13,8 +15,12 @@ func Load() (*AppConfig, error) {
 	viper.SetConfigFile(".env")
 	viper.AutomaticEnv()
 
+	// Try to read .env file, but don't fail if it doesn't exist
 	if err := viper.ReadInConfig(); err != nil {
-		return nil, err
+		// If .env file doesn't exist, that's okay - we'll use environment variables
+		if _, ok := err.(*os.PathError); !ok {
+			return nil, err
+		}
 	}
 
 	var config AppConfig
