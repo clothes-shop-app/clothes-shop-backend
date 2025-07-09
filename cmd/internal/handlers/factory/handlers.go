@@ -10,7 +10,7 @@ type Handlers struct {
 }
 
 func NewHandlers(services *services.Services) *Handlers {
-	v1Handlers := v1.NewV1Handlers(services.ProductService)
+	v1Handlers := v1.NewV1Handlers(services.ProductService, services.UserService)
 
 	return &Handlers{
 		V1Handlers: v1Handlers,

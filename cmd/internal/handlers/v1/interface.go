@@ -7,3 +7,8 @@ type productService interface {
 	UploadProduct(req models.UploadProduct) (*models.Product, error)
 	GetProductByID(id string) (*models.Product, error)
 }
+
+type userService interface {
+	GetUserByPhone(phone string) (*models.User, error)
+	CreateUser(user *models.User) error
+}

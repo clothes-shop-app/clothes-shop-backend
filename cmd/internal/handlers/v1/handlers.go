@@ -9,11 +9,13 @@ import (
 
 type V1Handlers struct {
 	productService productService
+	userService    userService
 }
 
-func NewV1Handlers(productService productService) *V1Handlers {
+func NewV1Handlers(productService productService, userService userService) *V1Handlers {
 	return &V1Handlers{
 		productService: productService,
+		userService:    userService,
 	}
 }
 
@@ -72,4 +74,32 @@ func (h *V1Handlers) GetProductByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, product)
+}
+
+func (h *V1Handlers) GetUserByPhone(c *gin.Context) {
+	phone := c.Param("phone")
+
+	user, err := h.userService.GetUserByPhone(phone)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
+}
+
+func (h *V1Handlers) CreateUser(c *gin.Context) {
+	var req models.User
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body: " + err.Error()})
+		return
+	}
+
+	err := h.userService.CreateUser(&req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
 }

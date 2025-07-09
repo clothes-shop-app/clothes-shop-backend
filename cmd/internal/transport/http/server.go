@@ -2,6 +2,7 @@ package http
 
 import (
 	handlers "clothes-shop-backend/cmd/internal/handlers/factory"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,12 +12,19 @@ func InitServer(handlers *handlers.Handlers) {
 
 	setupRoutes(router, handlers)
 
-	router.Run(":8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	router.Run(":" + port)
 }
 
 func setupRoutes(router *gin.Engine, handlers *handlers.Handlers) {
 	router.Use(func(c *gin.Context) {
-		c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
+		origin := c.Request.Header.Get("Origin")
+		if origin == "http://localhost:3000" || origin == "https://clothes-shop-seven.vercel.app" {
+			c.Header("Access-Control-Allow-Origin", origin)
+		}
 		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		c.Header("Access-Control-Allow-Credentials", "true")
@@ -32,4 +40,6 @@ func setupRoutes(router *gin.Engine, handlers *handlers.Handlers) {
 	router.GET("/products", handlers.V1Handlers.GetPaginatedProducts)
 	router.POST("/products", handlers.V1Handlers.UploadProduct)
 	router.GET("/products/:id", handlers.V1Handlers.GetProductByID)
+	router.GET("/users/:phone", handlers.V1Handlers.GetUserByPhone)
+	router.POST("/users", handlers.V1Handlers.CreateUser)
 }

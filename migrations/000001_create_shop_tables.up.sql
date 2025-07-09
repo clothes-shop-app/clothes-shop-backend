@@ -1,9 +1,11 @@
 CREATE TABLE users (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    login VARCHAR(255) UNIQUE NOT NULL,
-    is_admin BOOLEAN NOT NULL DEFAULT FALSE,
-    password_hash TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    phone VARCHAR(255) UNIQUE NOT NULL,
+    name TEXT NOT NULL,
+    avatar_url TEXT,
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE categories (
