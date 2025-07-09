@@ -1,10 +1,10 @@
 package main
 
 import (
-	"clothes-shop-backend/config"
 	"flag"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/mysql"
@@ -16,12 +16,8 @@ const (
 )
 
 func main() {
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatalf("error while config.Load: %v", err)
-	}
-
-	if cfg.DBURL == "" {
+	dbURL := os.Getenv("DB_URL")
+	if dbURL == "" {
 		log.Fatal("DB_URL is required")
 	}
 
@@ -29,7 +25,7 @@ func main() {
 	version := flag.Int("version", 0, "Migration version number")
 	flag.Parse()
 
-	m, err := migrate.New(migrationsPath, cfg.DBURL)
+	m, err := migrate.New(migrationsPath, dbURL)
 	if err != nil {
 		log.Fatalf("Error creating migrator: %v", err)
 	}
