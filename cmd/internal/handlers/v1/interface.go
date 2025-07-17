@@ -10,5 +10,5 @@ type productService interface {
 
 type userService interface {
 	GetUserByPhone(phone string) (*models.User, error)
-	CreateUser(user *models.User) error
+	CreateUser(user *models.User) (*models.User, error)
 }

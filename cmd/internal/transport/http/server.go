@@ -40,6 +40,6 @@ func setupRoutes(router *gin.Engine, handlers *handlers.Handlers) {
 	router.GET("/products", handlers.V1Handlers.GetPaginatedProducts)
 	router.POST("/products", handlers.V1Handlers.UploadProduct)
 	router.GET("/products/:id", handlers.V1Handlers.GetProductByID)
-	router.GET("/users/:phone", handlers.V1Handlers.GetUserByPhone)
+	router.GET("/users/phone/:phone", handlers.V1Handlers.GetUserByPhone)
 	router.POST("/users", handlers.V1Handlers.CreateUser)
 }

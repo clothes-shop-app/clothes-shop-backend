@@ -7,8 +7,8 @@ func (u *User) FromView() *models.User {
 		ID:        u.ID,
 		Phone:     u.Phone,
 		Name:      u.Name,
-		AvatarURL: u.AvatarURL,
-		Address:   u.Address,
+		AvatarURL: u.AvatarURL.String,
+		Address:   u.Address.String,
 		CreatedAt: u.CreatedAt,
 		UpdatedAt: u.UpdatedAt,
 	}

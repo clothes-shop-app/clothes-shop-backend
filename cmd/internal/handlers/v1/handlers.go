@@ -2,6 +2,7 @@ package v1
 
 import (
 	"clothes-shop-backend/cmd/internal/models"
+	"clothes-shop-backend/cmd/internal/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -85,7 +86,20 @@ func (h *V1Handlers) GetUserByPhone(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	if user == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	tokenString, err := utils.GenerateToken(user)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.SetCookie("token", tokenString, 0, "/", "", false, true)
+
+	c.JSON(http.StatusOK, gin.H{"user": user, "token": tokenString})
 }
 
 func (h *V1Handlers) CreateUser(c *gin.Context) {
@@ -95,11 +109,17 @@ func (h *V1Handlers) CreateUser(c *gin.Context) {
 		return
 	}
 
-	err := h.userService.CreateUser(&req)
+	user, err := h.userService.CreateUser(&req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
+	tokenString, err := utils.GenerateToken(user)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"user": user, "token": tokenString})
 }

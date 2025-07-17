@@ -14,6 +14,6 @@ func (s *UserService) GetUserByPhone(phone string) (*models.User, error) {
 	return s.UserRepository.GetUserByPhone(phone)
 }
 
-func (s *UserService) CreateUser(user *models.User) error {
+func (s *UserService) CreateUser(user *models.User) (*models.User, error) {
 	return s.UserRepository.CreateUser(user)
 }

@@ -2,8 +2,8 @@ CREATE TABLE users (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     phone VARCHAR(255) UNIQUE NOT NULL,
     name TEXT NOT NULL,
-    avatar_url TEXT,
-    address TEXT,
+    avatar_url TEXT NULL,
+    address TEXT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

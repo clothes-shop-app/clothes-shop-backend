@@ -2,7 +2,9 @@ package user
 
 import (
 	"clothes-shop-backend/cmd/internal/models"
+	"database/sql"
 
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -22,6 +24,11 @@ func (r *UserRepository) GetUserByPhone(phone string) (*models.User, error) {
 
 	var user User
 	err := r.db.Get(&user, query, phone)
+
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -29,12 +36,20 @@ func (r *UserRepository) GetUserByPhone(phone string) (*models.User, error) {
 	return user.FromView(), nil
 }
 
-func (r *UserRepository) CreateUser(user *models.User) error {
+func (r *UserRepository) CreateUser(user *models.User) (*models.User, error) {
+	newUUID := uuid.New()
+
 	query := `
-		INSERT INTO users (id, phone, name, avatar_url, address)
-		VALUES (?, ?, ?, ?, ?)
+		INSERT INTO users (id, phone, name, address)
+		VALUES (?, ?, ?, ?)
 	`
 
-	_, err := r.db.Exec(query, user.ID, user.Phone, user.Name, user.AvatarURL, user.Address)
-	return err
+	_, err := r.db.Exec(query, newUUID, user.Phone, user.Name, user.Address)
+	if err != nil {
+		return nil, err
+	}
+
+	user.ID = newUUID.String()
+
+	return user, err
 }
