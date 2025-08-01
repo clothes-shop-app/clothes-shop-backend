@@ -1,10 +1,10 @@
 package main
 
 import (
-	handlers "clothes-shop-backend/cmd/internal/handlers/factory"
-	repositories "clothes-shop-backend/cmd/internal/repositories/factory"
-	services "clothes-shop-backend/cmd/internal/services/factory"
-	"clothes-shop-backend/cmd/internal/transport/http"
+	handlers "clothes-shop-backend/internal/handlers/factory"
+	repositories "clothes-shop-backend/internal/repositories/factory"
+	services "clothes-shop-backend/internal/services/factory"
+	"clothes-shop-backend/internal/transport/http"
 	"log"
 	"os"
 
