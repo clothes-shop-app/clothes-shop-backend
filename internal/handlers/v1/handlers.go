@@ -181,3 +181,15 @@ func (h *V1Handlers) GetCartItems(c *gin.Context) {
 
 	c.JSON(http.StatusOK, cartItems)
 }
+
+func (h *V1Handlers) Checkout(c *gin.Context) {
+	userID := c.Param("user_id")
+
+	err := h.cartService.Checkout(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Checkout successful"})
+}

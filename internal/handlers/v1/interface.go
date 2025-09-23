@@ -17,4 +17,5 @@ type cartService interface {
 	GetCartItemsByUserID(userID string) ([]*models.CartItem, error)
 	UpdateCart(userID string, products []*models.CartItemPrototype) error
 	AddOneToCart(userID string, productID string) error
+	Checkout(userID string) error
 }

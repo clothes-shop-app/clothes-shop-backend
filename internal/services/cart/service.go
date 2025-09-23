@@ -21,3 +21,7 @@ func (s *CartService) UpdateCart(userID string, products []*models.CartItemProto
 func (s *CartService) AddOneToCart(userID string, productID string) error {
 	return s.CartRepository.AddOneToCart(userID, productID)
 }
+
+func (s *CartService) Checkout(userID string) error {
+	return nil
+}

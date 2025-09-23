@@ -46,4 +46,5 @@ func setupRoutes(router *gin.Engine, handlers *handlers.Handlers) {
 	router.GET("/cart", utils.AuthMiddleware(), handlers.V1Handlers.GetCartItems)
 	router.PUT("/cart", utils.AuthMiddleware(), handlers.V1Handlers.UpdateCart)
 	router.POST("/cart/add/:product_id", utils.AuthMiddleware(), handlers.V1Handlers.AddOneToCart)
+	router.POST("/checkout/:user_id", utils.AuthMiddleware(), handlers.V1Handlers.Checkout)
 }
