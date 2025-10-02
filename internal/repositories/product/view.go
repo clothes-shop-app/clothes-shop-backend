@@ -3,10 +3,9 @@ package product
 import "clothes-shop-backend/internal/models"
 
 func (p *Product) FromView() *models.Product {
-	price := 0
+	var price float64
 	if p.Price.Valid {
-		// Convert decimal dollars to integer cents
-		price = int(p.Price.Float64 * 100)
+		price = p.Price.Float64
 	}
 
 	categoryID := ""
